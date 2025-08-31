@@ -10,7 +10,8 @@ interface OpenSeaApi {
         @Query("asset_contract_address") assetContractAddress: String,
         @Query("event_type") eventType: String,
         @Query("limit") limit: Int = 300,
-        @Query("offset") offset: Int = 0
+        @Query("offset") offset: Int = 0,
+        @Query("token_id") tokenId: String? = null
     ): OpenSeaResponse
 }
 

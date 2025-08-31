@@ -3,8 +3,7 @@ package com.nftpro
 import android.app.Activity
 import android.content.Context
 import com.android.billingclient.api.*
-import com.revenuecat.purchases.Purchases
-import com.revenuecat.purchases.PurchasesConfiguration
+// RevenueCat removed - using only crypto payments + Google Play backup
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -25,7 +24,7 @@ class BillingManager @Inject constructor(
     
     init {
         initializeBilling()
-        initializeRevenueCat()
+        // RevenueCat removed - crypto payments managed by Web3PaymentManager
     }
     
     private fun initializeBilling() {
@@ -42,12 +41,7 @@ class BillingManager @Inject constructor(
         })
     }
     
-    private fun initializeRevenueCat() {
-        Purchases.configure(
-            PurchasesConfiguration.Builder(context, "YOUR_REVENUECAT_API_KEY")
-                .build()
-        )
-    }
+    // RevenueCat completely removed - using Web3PaymentManager for crypto payments
     
     suspend fun purchaseProSubscription(): Boolean {
         val productList = listOf(

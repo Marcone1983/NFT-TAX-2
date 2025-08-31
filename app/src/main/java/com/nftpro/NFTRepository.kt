@@ -286,6 +286,109 @@ class NFTRepository @Inject constructor(
         }
     }
     
+    suspend fun fetchOpenSeaERC1155Transactions(contractAddress: String, tokenId: String): List<Transaction> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = openSeaApi.getEvents(
+                    assetContractAddress = contractAddress,
+                    eventType = "successful",
+                    limit = 300,
+                    tokenId = tokenId
+                )
+                
+                response.assetEvents.filter { 
+                    it.asset?.tokenId == tokenId 
+                }.map { event ->
+                    Transaction(
+                        hash = event.transaction?.transactionHash ?: "",
+                        tokenId = event.asset?.tokenId ?: tokenId,
+                        from = event.seller?.address ?: "",
+                        to = event.winner?.address ?: "",
+                        amount = event.totalPrice?.toDoubleOrNull() ?: 0.0 / 1e18,
+                        gasFee = calculateGasFee(event.transaction),
+                        platformFee = event.totalPrice?.toDoubleOrNull() ?: 0.0 * 0.025,
+                        timestamp = formatTimestamp(event.createdDate),
+                        timestampMillis = parseTimestamp(event.createdDate),
+                        marketplace = "OpenSea",
+                        chain = "Ethereum"
+                    )
+                }
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
+    }
+    
+    suspend fun fetchPolygonERC1155Transactions(contractAddress: String, tokenId: String): List<Transaction> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val url = "https://api.polygonscan.com/api?module=account&action=token1155tx&contractaddress=$contractAddress&apikey=${getPolygonApiKey()}"
+                val request = Request.Builder().url(url).build()
+                val response = client.newCall(request).execute()
+                val json = JSONObject(response.body?.string() ?: "{}")
+                val result = json.getJSONArray("result")
+                
+                val transactions = mutableListOf<Transaction>()
+                for (i in 0 until result.length()) {
+                    val tx = result.getJSONObject(i)
+                    if (tx.getString("tokenID") == tokenId) {
+                        transactions.add(Transaction(
+                            hash = tx.getString("hash"),
+                            tokenId = tx.getString("tokenID"),
+                            from = tx.getString("from"),
+                            to = tx.getString("to"),
+                            amount = tx.optDouble("tokenValue", 0.0),
+                            gasFee = tx.optDouble("gasUsed", 0.0) * tx.optDouble("gasPrice", 0.0) / 1e18,
+                            platformFee = 0.0,
+                            timestamp = formatTimestamp(tx.getLong("timeStamp")),
+                            timestampMillis = tx.getLong("timeStamp") * 1000,
+                            marketplace = "Polygon",
+                            chain = "Polygon"
+                        ))
+                    }
+                }
+                transactions
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
+    }
+    
+    suspend fun fetchBSCERC1155Transactions(contractAddress: String, tokenId: String): List<Transaction> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val url = "https://api.bscscan.com/api?module=account&action=token1155tx&contractaddress=$contractAddress&apikey=${getBSCApiKey()}"
+                val request = Request.Builder().url(url).build()
+                val response = client.newCall(request).execute()
+                val json = JSONObject(response.body?.string() ?: "{}")
+                val result = json.getJSONArray("result")
+                
+                val transactions = mutableListOf<Transaction>()
+                for (i in 0 until result.length()) {
+                    val tx = result.getJSONObject(i)
+                    if (tx.getString("tokenID") == tokenId) {
+                        transactions.add(Transaction(
+                            hash = tx.getString("hash"),
+                            tokenId = tx.getString("tokenID"),
+                            from = tx.getString("from"),
+                            to = tx.getString("to"),
+                            amount = tx.optDouble("tokenValue", 0.0),
+                            gasFee = tx.optDouble("gasUsed", 0.0) * tx.optDouble("gasPrice", 0.0) / 1e18,
+                            platformFee = 0.0,
+                            timestamp = formatTimestamp(tx.getLong("timeStamp")),
+                            timestampMillis = tx.getLong("timeStamp") * 1000,
+                            marketplace = "BSC",
+                            chain = "BSC"
+                        ))
+                    }
+                }
+                transactions
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
+    }
+    
     suspend fun cacheTransactions(transactions: List<Transaction>) {
         withContext(Dispatchers.IO) {
             database.transactionDao().insertAll(

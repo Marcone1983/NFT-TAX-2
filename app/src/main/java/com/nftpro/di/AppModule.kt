@@ -111,4 +111,10 @@ object AppModule {
     fun provideBillingManager(@ApplicationContext context: Context): BillingManager {
         return BillingManager(context)
     }
+    
+    @Provides
+    @Singleton
+    fun provideWeb3PaymentManager(@ApplicationContext context: Context): Web3PaymentManager {
+        return Web3PaymentManager(context)
+    }
 }

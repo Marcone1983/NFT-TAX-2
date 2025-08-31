@@ -13,7 +13,8 @@ import javax.inject.Inject
 class NFTViewModel @Inject constructor(
     private val repository: NFTRepository,
     private val blockchainService: BlockchainService,
-    private val billingManager: BillingManager
+    private val billingManager: BillingManager,
+    private val web3PaymentManager: Web3PaymentManager
 ) : ViewModel() {
     
     private val _state = MutableStateFlow(NFTState())
@@ -555,6 +556,70 @@ class NFTViewModel @Inject constructor(
     private fun trackError(error: Exception) {
         // Crashlytics error tracking
     }
+    
+    fun initiateCryptoPayment(tier: String, chain: String, token: String) {
+        viewModelScope.launch {
+            try {
+                val paymentRequest = if (tier == "Pro") {
+                    web3PaymentManager.createProPaymentRequest(chain, token)
+                } else {
+                    web3PaymentManager.createBasicPaymentRequest(chain, token)
+                }
+                
+                // Store payment request for verification
+                _state.value = _state.value.copy(
+                    pendingPayment = paymentRequest,
+                    showCryptoPayment = true
+                )
+                
+                trackEvent("crypto_payment_initiated", mapOf(
+                    "tier" to tier,
+                    "chain" to chain,
+                    "token" to token
+                ))
+                
+            } catch (e: Exception) {
+                _state.value = _state.value.copy(
+                    error = "Failed to initiate crypto payment: ${e.message}"
+                )
+                trackError(e)
+            }
+        }
+    }
+    
+    fun verifyCryptoPayment(txHash: String) {
+        viewModelScope.launch {
+            try {
+                val paymentRequest = _state.value.pendingPayment
+                if (paymentRequest != null) {
+                    val isVerified = web3PaymentManager.verifyPayment(paymentRequest, txHash)
+                    
+                    if (isVerified) {
+                        _state.value = _state.value.copy(
+                            isProUser = paymentRequest.tier == "Pro",
+                            pendingPayment = null,
+                            showCryptoPayment = false,
+                            cryptoPaymentSuccess = true
+                        )
+                        
+                        trackEvent("crypto_payment_verified", mapOf(
+                            "tier" to paymentRequest.tier,
+                            "tx_hash" to txHash
+                        ))
+                    } else {
+                        _state.value = _state.value.copy(
+                            error = "Payment verification failed. Please check transaction hash."
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                _state.value = _state.value.copy(
+                    error = "Payment verification error: ${e.message}"
+                )
+                trackError(e)
+            }
+        }
+    }
 }
 
 data class NFTState(
@@ -577,7 +642,10 @@ data class NFTState(
     val taxMethod: TaxMethod = TaxMethod.AVERAGE,
     val jurisdiction: String = "Italy",
     val lastSyncTime: Long = 0,
-    val f24Generated: Boolean = false
+    val f24Generated: Boolean = false,
+    val pendingPayment: PaymentRequest? = null,
+    val showCryptoPayment: Boolean = false,
+    val cryptoPaymentSuccess: Boolean = false
 )
 
 data class Transaction(
