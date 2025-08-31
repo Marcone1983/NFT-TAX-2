@@ -33,6 +33,8 @@ jobs:
           ls -la gradle/wrapper/
           echo "📄 Settings file:"
           cat settings.gradle.kts
+          echo "📄 Root build.gradle.kts:"
+          cat build.gradle.kts
           
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace

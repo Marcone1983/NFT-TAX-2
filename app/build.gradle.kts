@@ -3,8 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -116,16 +114,16 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation("androidx.biometric:biometric:1.1.0")
     
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-config-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    // Firebase (commented out for build test)
+    // implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+    // implementation("com.google.firebase:firebase-analytics-ktx")
+    // implementation("com.google.firebase:firebase-crashlytics-ktx")
+    // implementation("com.google.firebase:firebase-config-ktx")
+    // implementation("com.google.firebase:firebase-messaging-ktx")
     
-    // Google Play Billing
-    implementation("com.android.billingclient:billing-ktx:6.1.0")
-    implementation("com.revenuecat.purchases:purchases:7.3.1")
+    // Google Play Billing (replaced with crypto payments)
+    // implementation("com.android.billingclient:billing-ktx:6.1.0")
+    // implementation("com.revenuecat.purchases:purchases:7.3.1")
     
     // Web3/Blockchain
     implementation("org.web3j:core:4.10.3-android")

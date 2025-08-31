@@ -11,9 +11,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") }
+        maven("https://jitpack.io")
     }
 }
 
-rootProject.name = "NFT Pro"
+rootProject.name = "NFTPro"
 include(":app")
