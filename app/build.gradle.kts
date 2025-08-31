@@ -67,6 +67,12 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force("org.bouncycastle:bcprov-jdk15on:1.70")
+    }
+}
+
 dependencies {
     // Core Android
     implementation("androidx.core:core-ktx:1.12.0")
