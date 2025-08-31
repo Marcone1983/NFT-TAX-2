@@ -1,0 +1,49 @@
+name: 🔍 Debug Gradle Issue
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ develop ]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Debug environment
+      run: |
+        echo "=== Current directory ==="
+        pwd
+        echo ""
+        echo "=== List all files ==="
+        ls -la
+        echo ""
+        echo "=== Check for hidden characters in settings files ==="
+        od -c settings.gradle.kts | head -5
+        echo ""
+        echo "=== Content of settings.gradle.kts ==="
+        cat settings.gradle.kts
+        echo ""
+        echo "=== Check gradlew for issues ==="
+        file gradlew
+        echo ""
+        echo "=== Check GRADLE_OPTS ==="
+        echo "GRADLE_OPTS: $GRADLE_OPTS"
+        echo ""
+        echo "=== Check all environment variables with 'gradle' ==="
+        env | grep -i gradle || true
+        echo ""
+        echo "=== Try gradle with explicit settings file ==="
+        ./gradlew --version --settings-file=settings.gradle.kts
+        echo ""
+        echo "=== Check gradle wrapper properties ==="
+        cat gradle/wrapper/gradle-wrapper.properties

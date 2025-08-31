@@ -3,8 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -32,7 +30,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isMinifyEnabled = false
@@ -67,6 +64,12 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.bouncycastle:bcprov-jdk15on:1.70")
     }
 }
 
@@ -116,19 +119,10 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation("androidx.biometric:biometric:1.1.0")
     
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-config-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx")
-    
-    // Google Play Billing
-    implementation("com.android.billingclient:billing-ktx:6.1.0")
-    implementation("com.revenuecat.purchases:purchases:7.3.1")
-    
     // Web3/Blockchain
-    implementation("org.web3j:core:4.10.3-android")
+    implementation("org.web3j:core:4.9.8") {
+        exclude(group = "org.bouncycastle", module = "bcprov-jdk15to18")
+    }
     implementation("com.github.WalletConnect:kotlin-walletconnect-lib:0.9.8")
     
     // Charts
