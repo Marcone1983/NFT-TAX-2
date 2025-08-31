@@ -114,7 +114,9 @@ dependencies {
     implementation("androidx.biometric:biometric:1.1.0")
     
     // Web3/Blockchain
-    implementation("org.web3j:core:4.9.8")
+    implementation("org.web3j:core:4.9.8") {
+        exclude(group = "org.bouncycastle", module = "bcprov-jdk15to18")
+    }
     implementation("com.github.WalletConnect:kotlin-walletconnect-lib:0.9.8")
     
     // Charts
