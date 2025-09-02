@@ -57,7 +57,7 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: Build with Gradle
-      run: ./gradlew build -x test --stacktrace --no-daemon
+      run: ./gradlew clean build -x test --stacktrace --no-daemon --no-configuration-cache
       
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
