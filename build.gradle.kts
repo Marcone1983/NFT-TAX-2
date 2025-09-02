@@ -1,3 +1,5 @@
+// NFT Tax Calculator Pro v2.0.0 - December 2024
+// Enterprise Production Build Configuration
 // Top-level build file
 plugins {
     id("com.android.application") version "8.1.4" apply false

@@ -1,8 +1,13 @@
-# 💰 NFT Pro - Pagamenti Crypto Nativi
+# 💰 NFT Tax Calculator Pro - Pagamenti Crypto Enterprise
 
-## 🚀 **ZERO App Store - ZERO RevenueCat - ZERO Commissioni**
+**Version:** 2.0.0 - December 2024  
+**Payment System:** Direct Wallet Integration
+**Wallet:** 0xC69088eB5F015Fca5B385b8E3A0463749813093e
+**Last Updated:** December 2024
 
-**Paghi direttamente al wallet del developer con USDC/USDT!**
+## 🚀 **ENTERPRISE CRYPTO PAYMENTS - ZERO Commissioni**
+
+**Paghi direttamente al wallet con USDC/USDT su ETH/Polygon/BSC!**
 
 ---
 

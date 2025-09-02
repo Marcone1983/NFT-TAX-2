@@ -1,8 +1,13 @@
-# 💰 Cos'è RevenueCat?
+# 🚫 RevenueCat RIMOSSO - NFT Tax Calculator Pro v2.0
 
-## **RevenueCat = Gestore Abbonamenti In-App**
+**Version:** 2.0.0 - December 2024  
+**Status:** RevenueCat Completamente Rimosso  
+**Payment System:** Crypto Direct Only
+**Last Updated:** December 2024
 
-**RevenueCat** è un servizio che gestisce gli abbonamenti e acquisti in-app per le tue app mobile.
+## **RevenueCat Era Un Gestore Abbonamenti - ORA RIMOSSO**
+
+**RevenueCat** era un servizio per gestire abbonamenti in-app, ma è stato **COMPLETAMENTE RIMOSSO** dall'app NFT Tax Calculator Pro v2.0!
 
 ---
 

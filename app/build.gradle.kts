@@ -1,3 +1,5 @@
+// NFT Tax Calculator Pro v2.0.0 - December 2024
+// Enterprise App Module Build Configuration
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")

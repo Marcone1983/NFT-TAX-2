@@ -1,8 +1,12 @@
-# 🔥 NFT Pro - REAL TESTING Guide
+# 🔥 NFT Tax Calculator Pro - PRODUCTION TESTING Guide
 
-## 💯 **TESTING CON DATI REALI**
+**Version:** 2.0.0 - December 2024  
+**Testing Environment:** Production APIs Only
+**Last Updated:** December 2024
 
-**HAI RAGIONE!** Per testare l'app devi usare le **API di produzione** per vedere se funziona con i tuoi NFT veri!
+## 💯 **TESTING CON DATI REALI DI PRODUZIONE**
+
+**ENTERPRISE TESTING!** L'app usa **API di produzione** per testare con NFT e transazioni reali!
 
 ---
 
