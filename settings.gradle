@@ -16,5 +16,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'NFTPro'
-include ':app'
+rootProject.name = "NFT Tax Calculator Pro"
+include(":app")
